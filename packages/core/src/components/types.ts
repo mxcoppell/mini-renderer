@@ -18,6 +18,7 @@ export interface PrismConfig {
 export interface StyleOptions {
     injectStyles?: boolean;
     customStyles?: string;
+    theme?: 'light' | 'dark';
 }
 
 export interface CodeBlock {

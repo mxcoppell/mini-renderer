@@ -22,6 +22,7 @@ export class StyleManager {
 
         // Import all styles
         const styles = [
+            require('../styles/themes.css'),
             require('../styles/base.css'),
             require('../styles/code-blocks.css'),
             require('../styles/math.css'),
@@ -36,6 +37,14 @@ export class StyleManager {
             customStyleElement.textContent = this.options.customStyles;
             document.head.appendChild(customStyleElement);
         }
+
+        // Set initial theme
+        this.setTheme(this.options.theme || 'light');
+    }
+
+    public setTheme(theme: 'light' | 'dark'): void {
+        if (typeof document === 'undefined') return;
+        document.documentElement.setAttribute('data-theme', theme);
     }
 
     public cleanup(): void {

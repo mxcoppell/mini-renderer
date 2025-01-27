@@ -9,8 +9,8 @@
     position: absolute;
     top: 5px;
     height: 28px;
-    background-color: #f0f0f0;
-    border: 1px solid #ccc;
+    background-color: var(--bg-secondary);
+    border: 1px solid var(--border-color-dark);
     border-radius: 3px;
     display: flex;
     align-items: center;
@@ -27,7 +27,7 @@
 }
 
 .copy-button:hover {
-    background-color: #e0e0e0;
+    background-color: var(--button-hover);
 }
 
 .copy-icon {
@@ -43,7 +43,7 @@
     padding: 0 8px;
     font-size: 12px;
     font-weight: 600;
-    color: #1a1a1a;
+    color: var(--text-secondary);
     line-height: 1;
     white-space: nowrap;
 }
@@ -54,16 +54,16 @@
 
 /* Rendered markdown styles */
 .rendered-markdown {
-    background-color: #f8f8f8;
-    border: 1px solid #ddd;
+    background-color: var(--bg-tertiary);
+    border: 1px solid var(--border-color);
     border-radius: 3px;
     padding: 5px 10px;
     position: relative;
 }
 
 .rendered-markdown pre {
-    background-color: #f0f0f0;
-    border: 1px solid #ccc;
+    background-color: var(--bg-secondary);
+    border: 1px solid var(--border-color-dark);
     border-radius: 3px;
     padding: 5px;
     margin: 5px 0;

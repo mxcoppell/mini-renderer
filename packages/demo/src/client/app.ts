@@ -17,6 +17,29 @@ const styleManager = new StyleManager();
 // Inject styles
 styleManager.injectStyles();
 
+// Theme handling
+let currentTheme: 'light' | 'dark' = 'light';
+const themeToggle = document.getElementById('theme-toggle') as HTMLButtonElement;
+
+function toggleTheme() {
+    currentTheme = currentTheme === 'light' ? 'dark' : 'light';
+    styleManager.setTheme(currentTheme);
+    themeToggle.innerHTML = currentTheme === 'light' ? '🌞 Light' : '🌙 Dark';
+
+    // Store preference
+    localStorage.setItem('theme', currentTheme);
+}
+
+// Initialize theme
+const savedTheme = localStorage.getItem('theme') as 'light' | 'dark' | null;
+if (savedTheme) {
+    currentTheme = savedTheme;
+    styleManager.setTheme(currentTheme);
+    themeToggle.innerHTML = currentTheme === 'light' ? '🌞 Light' : '🌙 Dark';
+}
+
+themeToggle.addEventListener('click', toggleTheme);
+
 // Function to fetch and display the list of files
 async function loadFileList(): Promise<void> {
     try {
