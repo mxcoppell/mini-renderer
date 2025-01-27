@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mini-Render Demo</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.24.1/themes/prism.min.css" rel="stylesheet" />
+    <style>
+        :root {
+            --bg-primary: #ffffff;
+            --bg-secondary: #f8f9fa;
+            --bg-tertiary: #f1f3f5;
+            --text-primary: #1a1a1a;
+            --text-secondary: #4a5568;
+            --border-color: #e2e8f0;
+            --button-hover: #f3f4f6;
+            --icon-color: #4a5568;
+            --icon-filter: none;
+        }
+
+        [data-theme="dark"] {
+            --bg-primary: #1a1a1a;
+            --bg-secondary: #222222;
+            --bg-tertiary: #242424;
+            --text-primary: #ffffff;
+            --text-secondary: #d1d1d1;
+            --border-color: #2d2d2d;
+            --button-hover: #333333;
+            --icon-color: #d1d1d1;
+            --icon-filter: invert(0.9) sepia(0) saturate(0) brightness(0.9);
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 20px;
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        #container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+
+        #theme-toggle {
+            padding: 8px 16px;
+            border: 1px solid var(--border-color);
+            background-color: var(--bg-secondary);
+            color: var(--text-primary);
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+
+        #theme-toggle:hover {
+            background-color: var(--button-hover);
+        }
+
+        .code-block-container {
+            position: relative;
+            margin: 1.5em 0;
+        }
+
+        .code-block-container>pre {
+            margin: 0;
+            padding: 1em;
+            padding-top: 0;
+            padding-right: 90px;
+            border-radius: 6px;
+            background-color: var(--bg-secondary) !important;
+            overflow-x: auto;
+        }
+
+        .code-block-container code {
+            font-family: 'Fira Code', 'Consolas', monospace;
+            font-size: 14px;
+            line-height: 1.4;
+        }
+
+        .language-label {
+            position: absolute;
+            top: 0;
+            right: 40px;
+            padding: 4px 8px;
+            font-size: 12px;
+            color: var(--text-secondary);
+            background-color: var(--bg-tertiary);
+            border-radius: 0 6px;
+            user-select: none;
+        }
+
+        .copy-button {
+            position: absolute;
+            top: 0;
+            right: 0;
+            padding: 4px 8px;
+            font-size: 12px;
+            color: var(--text-secondary);
+            background-color: var(--bg-tertiary);
+            border: none;
+            border-radius: 0 6px;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+
+        .copy-button:hover {
+            background-color: var(--button-hover);
+        }
+
+        .rendered-markdown-container {
+            background-color: transparent;
+            padding: 5px;
+            margin: 0;
+            overflow-x: auto;
+        }
+
+        .rendered-markdown-container code {
+            font-family: 'Fira Code', 'Consolas', monospace;
+            font-size: 14px;
+            line-height: 1.4;
+            color: var(--text-primary);
+        }
+
+        [data-theme="dark"] pre[class*="language-"],
+        [data-theme="dark"] code[class*="language-"] {
+            color: #e0e0e0;
+            background: #282828;
+            text-shadow: none;
+        }
+
+        [data-theme="dark"] .token.comment,
+        [data-theme="dark"] .token.prolog,
+        [data-theme="dark"] .token.doctype,
+        [data-theme="dark"] .token.cdata {
+            color: #6a9955;
+        }
+
+        [data-theme="dark"] .token.punctuation {
+            color: #d4d4d4;
+        }
+
+        [data-theme="dark"] .token.property,
+        [data-theme="dark"] .token.keyword,
+        [data-theme="dark"] .token.tag {
+            color: #569cd6;
+        }
+
+        [data-theme="dark"] .token.class-name {
+            color: #4ec9b0;
+        }
+
+        [data-theme="dark"] .token.string {
+            color: #ce9178;
+        }
+
+        [data-theme="dark"] .token.number {
+            color: #b5cea8;
+        }
+
+        [data-theme="dark"] .token.function {
+            color: #dcdcaa;
+        }
+    </style>
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.24.1/prism.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.24.1/components/prism-core.min.js"></script>
+    <script
+        src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.24.1/plugins/autoloader/prism-autoloader.min.js"></script>
+</head>
+
+<body>
+    <div id="container">
+        <div class="header">
+            <h1>Mini-Render Demo</h1>
+            <button id="theme-toggle">🌞 Light</button>
+        </div>
+        <div id="content"></div>
+    </div>
+
+    <script>
+        // Theme toggle functionality
+        const themeToggle = document.getElementById('theme-toggle');
+        const prefersDarkScheme = window.matchMedia('(prefers-color-scheme: dark)');
+
+        function getTheme() {
+            const savedTheme = localStorage.getItem('theme');
+            if (savedTheme) return savedTheme;
+            return prefersDarkScheme.matches ? 'dark' : 'light';
+        }
+
+        function setTheme(theme) {
+            document.documentElement.setAttribute('data-theme', theme);
+            localStorage.setItem('theme', theme);
+            themeToggle.textContent = theme === 'light' ? '🌞 Light' : '🌙 Dark';
+        }
+
+        // Initialize theme
+        setTheme(getTheme());
+
+        themeToggle.addEventListener('click', () => {
+            const currentTheme = document.documentElement.getAttribute('data-theme');
+            const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+            setTheme(newTheme);
+        });
+
+        // Rendering functionality
+        function renderContent(content) {
+            const renderer = new marked.Renderer();
+            const originalCodeRenderer = renderer.code.bind(renderer);
+
+            renderer.code = (code, language) => {
+                if (language === 'markdown') {
+                    return `<div class="code-block-container">
+                        <pre><code class="language-markdown">${code}</code></pre>
+                        <span class="language-label">markdown</span>
+                        <button class="copy-button" onclick="copyCode(this)">Copy</button>
+                        <div class="rendered-markdown-container">${marked(code)}</div>
+                    </div>`;
+                }
+
+                const html = originalCodeRenderer(code, language);
+                return `<div class="code-block-container">
+                    ${html}
+                    <span class="language-label">${language || 'text'}</span>
+                    <button class="copy-button" onclick="copyCode(this)">Copy</button>
+                </div>`;
+            };
+
+            marked.setOptions({
+                renderer: renderer,
+                highlight: (code, lang) => {
+                    if (Prism.languages[lang]) {
+                        return Prism.highlight(code, Prism.languages[lang], lang);
+                    }
+                    return code;
+                }
+            });
+
+            return marked(content);
+        }
+
+        // Copy code functionality
+        function copyCode(button) {
+            const pre = button.parentElement.querySelector('pre');
+            const code = pre.textContent;
+
+            navigator.clipboard.writeText(code).then(() => {
+                const originalText = button.textContent;
+                button.textContent = 'Copied!';
+                setTimeout(() => {
+                    button.textContent = originalText;
+                }, 2000);
+            });
+        }
+
+        // Fetch and render content
+        fetch('content.md')
+            .then(response => response.text())
+            .then(content => {
+                document.getElementById('content').innerHTML = renderContent(content);
+                Prism.highlightAll();
+            })
+            .catch(error => {
+                console.error('Error fetching content:', error);
+                document.getElementById('content').innerHTML = '<p>Error loading content. Please try again later.</p>';
+            });
+    </script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js"></script>
+    <script>
+        MathJax = {
+            loader: { load: ['input/tex', 'output/svg'] },
+            tex: {
+                inlineMath: [['$', '$'], ['\\(', '\\)']],
+                displayMath: [['$$', '$$'], ['\\[', '\\]']],
+            },
+            svg: {
+                fontCache: 'global',
+                scale: 1.2
+            }
+        };
+    </script>
+</body>
+
+</html>

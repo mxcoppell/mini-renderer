@@ -45,6 +45,47 @@
         #theme-toggle:hover {
             background-color: var(--button-hover);
         }
+
+        /* Override Prism styles for dark mode */
+        [data-theme="dark"] pre[class*="language-"],
+        [data-theme="dark"] code[class*="language-"] {
+            color: #e0e0e0;
+            background: #282828;
+            text-shadow: none;
+        }
+
+        [data-theme="dark"] .token.comment,
+        [data-theme="dark"] .token.prolog,
+        [data-theme="dark"] .token.doctype,
+        [data-theme="dark"] .token.cdata {
+            color: #6a9955;
+        }
+
+        [data-theme="dark"] .token.punctuation {
+            color: #d4d4d4;
+        }
+
+        [data-theme="dark"] .token.property,
+        [data-theme="dark"] .token.keyword,
+        [data-theme="dark"] .token.tag {
+            color: #569cd6;
+        }
+
+        [data-theme="dark"] .token.class-name {
+            color: #4ec9b0;
+        }
+
+        [data-theme="dark"] .token.string {
+            color: #ce9178;
+        }
+
+        [data-theme="dark"] .token.number {
+            color: #b5cea8;
+        }
+
+        [data-theme="dark"] .token.function {
+            color: #dcdcaa;
+        }
     </style>
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.24.1/themes/prism.min.css" rel="stylesheet" />

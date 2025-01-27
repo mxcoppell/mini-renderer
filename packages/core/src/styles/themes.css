@@ -10,17 +10,27 @@
     --border-color: #ddd;
     --border-color-dark: #ccc;
     --button-hover: #e0e0e0;
+    --icon-color: currentColor;
+    --icon-filter: none;
 }
 
 /* Dark theme */
 :root[data-theme="dark"] {
     --bg-primary: #1a1a1a;
-    --bg-secondary: #2d2d2d;
-    --bg-tertiary: #262626;
-    --text-primary: #e0e0e0;
-    --text-secondary: #c0c0c0;
+    --bg-secondary: #282828;
+    /* More noticeable difference from primary */
+    --bg-tertiary: #242424;
+    /* Markdown block background */
+    --text-primary: #ffffff;
+    /* Brightest white for code */
+    --text-secondary: #d1d1d1;
+    /* Consistent color for labels and icons */
     --link-color: #60a5fa;
     --border-color: #404040;
     --border-color-dark: #505050;
-    --button-hover: #3d3d3d;
+    --button-hover: #333333;
+    --icon-color: #d1d1d1;
+    /* Match language label color */
+    --icon-filter: invert(0.9) sepia(0) saturate(0) brightness(0.9);
+    /* Make icon match text-secondary */
 }

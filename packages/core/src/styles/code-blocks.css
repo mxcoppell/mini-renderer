@@ -24,6 +24,7 @@
     width: 30px;
     cursor: pointer;
     font-size: 16px;
+    color: var(--icon-color);
 }
 
 .copy-button:hover {
@@ -36,6 +37,7 @@
     background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>');
     background-repeat: no-repeat;
     background-position: center;
+    filter: var(--icon-filter);
 }
 
 .language-label {
@@ -49,16 +51,29 @@
 }
 
 .code-block-container>pre {
-    padding-top: 40px;
+    margin-top: 0;
+    padding-right: 90px;
+    /* Space for buttons */
+    padding-left: 10px;
+    padding-top: 5px;
+    padding-bottom: 5px;
 }
 
 /* Rendered markdown styles */
-.rendered-markdown {
+.rendered-markdown-container {
     background-color: var(--bg-tertiary);
-    border: 1px solid var(--border-color);
-    border-radius: 3px;
-    padding: 5px 10px;
-    position: relative;
+    padding-right: 90px;
+    /* Space for buttons */
+    padding-left: 10px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+}
+
+.rendered-markdown {
+    background-color: transparent;
+    border: none;
+    padding: 0;
+    margin: 0;
 }
 
 .rendered-markdown pre {
@@ -72,15 +87,6 @@
 .rendered-markdown code {
     background-color: transparent;
     padding: 0;
-}
-
-.code-block-container pre,
-.rendered-markdown {
-    padding-left: 10px;
-}
-
-.rendered-markdown {
-    padding-top: 0;
 }
 
 .rendered-markdown .copy-button,
