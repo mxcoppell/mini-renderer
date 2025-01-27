@@ -214,67 +214,70 @@
             setTheme(newTheme);
         });
 
-        // Rendering functionality
-        function renderContent(content) {
-            const renderer = new marked.Renderer();
-            const originalCodeRenderer = renderer.code.bind(renderer);
+        // Wait for marked to be loaded
+        window.onload = function () {
+            // Rendering functionality
+            function renderContent(content) {
+                const renderer = new marked.Renderer();
+                const originalCodeRenderer = renderer.code.bind(renderer);
 
-            renderer.code = (code, language) => {
-                if (language === 'markdown') {
-                    return `<div class="code-block-container">
-                        <pre><code class="language-markdown">${code}</code></pre>
-                        <span class="language-label">markdown</span>
-                        <button class="copy-button" onclick="copyCode(this)">Copy</button>
-                        <div class="rendered-markdown-container">${marked(code)}</div>
-                    </div>`;
-                }
-
-                const html = originalCodeRenderer(code, language);
-                return `<div class="code-block-container">
-                    ${html}
-                    <span class="language-label">${language || 'text'}</span>
-                    <button class="copy-button" onclick="copyCode(this)">Copy</button>
-                </div>`;
-            };
-
-            marked.setOptions({
-                renderer: renderer,
-                highlight: (code, lang) => {
-                    if (Prism.languages[lang]) {
-                        return Prism.highlight(code, Prism.languages[lang], lang);
+                renderer.code = (code, language) => {
+                    if (language === 'markdown') {
+                        return `<div class="code-block-container">
+                            <pre><code class="language-markdown">${code}</code></pre>
+                            <span class="language-label">markdown</span>
+                            <button class="copy-button" onclick="copyCode(this)">Copy</button>
+                            <div class="rendered-markdown-container">${marked.parse(code)}</div>
+                        </div>`;
                     }
-                    return code;
-                }
-            });
 
-            return marked(content);
+                    const html = originalCodeRenderer(code, language);
+                    return `<div class="code-block-container">
+                        ${html}
+                        <span class="language-label">${language || 'text'}</span>
+                        <button class="copy-button" onclick="copyCode(this)">Copy</button>
+                    </div>`;
+                };
+
+                marked.setOptions({
+                    renderer: renderer,
+                    highlight: (code, lang) => {
+                        if (Prism.languages[lang]) {
+                            return Prism.highlight(code, Prism.languages[lang], lang);
+                        }
+                        return code;
+                    }
+                });
+
+                return marked.parse(content);
+            }
+
+            // Copy code functionality
+            window.copyCode = function (button) {
+                const pre = button.parentElement.querySelector('pre');
+                const code = pre.textContent;
+
+                navigator.clipboard.writeText(code).then(() => {
+                    const originalText = button.textContent;
+                    button.textContent = 'Copied!';
+                    setTimeout(() => {
+                        button.textContent = originalText;
+                    }, 2000);
+                });
+            }
+
+            // Fetch and render content
+            fetch('content.md')
+                .then(response => response.text())
+                .then(content => {
+                    document.getElementById('content').innerHTML = renderContent(content);
+                    Prism.highlightAll();
+                })
+                .catch(error => {
+                    console.error('Error fetching content:', error);
+                    document.getElementById('content').innerHTML = '<p>Error loading content. Please try again later.</p>';
+                });
         }
-
-        // Copy code functionality
-        function copyCode(button) {
-            const pre = button.parentElement.querySelector('pre');
-            const code = pre.textContent;
-
-            navigator.clipboard.writeText(code).then(() => {
-                const originalText = button.textContent;
-                button.textContent = 'Copied!';
-                setTimeout(() => {
-                    button.textContent = originalText;
-                }, 2000);
-            });
-        }
-
-        // Fetch and render content
-        fetch('content.md')
-            .then(response => response.text())
-            .then(content => {
-                document.getElementById('content').innerHTML = renderContent(content);
-                Prism.highlightAll();
-            })
-            .catch(error => {
-                console.error('Error fetching content:', error);
-                document.getElementById('content').innerHTML = '<p>Error loading content. Please try again later.</p>';
-            });
     </script>
     <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js"></script>
     <script>
