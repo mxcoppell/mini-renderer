@@ -93,3 +93,15 @@
 .rendered-markdown .language-label {
     top: 5px;
 }
+
+.code-block-container pre[class*="language-"] .token.operator,
+.code-block-container code[class*="language-"] .token.operator {
+    background: none;
+    color: inherit;
+}
+
+[data-theme="dark"] .code-block-container pre[class*="language-"] .token.operator,
+[data-theme="dark"] .code-block-container code[class*="language-"] .token.operator {
+    background: none;
+    color: inherit;
+}
