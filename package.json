@@ -7,6 +7,10 @@
   "scripts": {
     "build": "npm run build --workspace=packages/core",
     "dev": "npm run dev --workspace=packages/demo",
-    "test": "npm test --workspaces"
+    "test": "npm test --workspaces",
+    "npmdemo": "npm run npmdemo --workspace=packages/npmdemo"
+  },
+  "dependencies": {
+    "mini-renderer": "^0.1.0"
   }
 }

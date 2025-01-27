@@ -1,16 +1,13 @@
 # Mini-Renderer
 
-A lightweight TypeScript package for rendering markdown content with support for:
-- Code syntax highlighting
-- LaTeX math equations
-- Nested markdown in code blocks
-- Copy to clipboard functionality
-- Light/Dark theme support
+A lightweight TypeScript package for rendering markdown with code highlighting, LaTeX math, and theme support.
 
-<div align="center">
-  <img src="docs/render-sample.png" alt="Mini-Renderer Sample" style="width: 100%; max-width: 800px;">
-  <p><em>Sample output of Mini-Renderer showing code highlighting, math rendering, and theme support</em></p>
-</div>
+## Features
+- Markdown rendering with code syntax highlighting
+- LaTeX math support (inline and display mode)
+- Light/Dark theme switching
+- Code block copy buttons
+- Proper escaping for code blocks and LaTeX content
 
 ## Installation
 
@@ -18,9 +15,7 @@ A lightweight TypeScript package for rendering markdown content with support for
 npm install mini-renderer
 ```
 
-## Usage
-
-### Basic Usage
+## Usage Example
 
 ```typescript
 import { MiniRenderer, StyleManager } from 'mini-renderer';
@@ -29,84 +24,40 @@ import { MiniRenderer, StyleManager } from 'mini-renderer';
 const renderer = new MiniRenderer();
 const styleManager = new StyleManager();
 
-// Inject styles (required once)
+// Inject required styles
 styleManager.injectStyles();
 
 // Render content
 const content = `
 # Example
 Here's some code:
-\`\`\`python
-def hello(name):
-    return f"Hello, {name}!"
+\`\`\`typescript
+const x = "Hello World";
 \`\`\`
 
 And some math: $E = mc^2$
+
+Matrix:
+$$
+\\begin{bmatrix}
+1 & 2 \\\\
+3 & 4
+\\end{bmatrix}
+$$
 `;
 
-const outputElement = document.getElementById('output');
-if (outputElement) {
-    outputElement.innerHTML = renderer.render(content);
-}
+const output = renderer.render(content);
+document.getElementById('output').innerHTML = output;
+
+// Optional: Enable dark theme
+styleManager.setTheme('dark');
 ```
 
-### Theme Support
-
-```typescript
-// Switch theme
-styleManager.setTheme('dark'); // or 'light'
-
-// With theme toggle
-function toggleTheme() {
-    const currentTheme = document.documentElement.getAttribute('data-theme');
-    const newTheme = currentTheme === 'light' ? 'dark' : 'light';
-    styleManager.setTheme(newTheme);
-}
-```
-
-### Configuration Options
-
-```typescript
-const renderer = new MiniRenderer({
-    mathJaxConfig: {
-        inlineMath: [['$', '$']],
-        displayMath: [['$$', '$$']],
-        scale: 1.2
-    },
-    styleOptions: {
-        theme: 'light',
-        customStyles: '/* Your custom CSS */'
-    }
-});
-```
-
-## Features
-
-### Code Block Support
-- Syntax highlighting for multiple languages
-- Copy to clipboard functionality
-- Language label display
-- Dark theme support
-
-### Math Support
-- Inline math with `$...$`
-- Block math with `$$...$$`
-- LaTeX syntax support
-
-### Markdown Support
-- Standard markdown syntax
-- Nested markdown rendering in code blocks
-- Customizable styling
-
-## Demo Application
-
-A demo web application is included to showcase the package functionality.
-
-### Running the Demo
+## Development
 
 1. Clone the repository:
 ```bash
-git clone https://github.com/yourusername/mini-renderer.git
+git clone https://github.com/mxcoppell/mini-renderer.git
 cd mini-renderer
 ```
 
@@ -115,61 +66,37 @@ cd mini-renderer
 npm install
 ```
 
-3. Build the core package:
+3. Run the demo:
 ```bash
-npm run build
+npm run dev      # Runs the local version demo
+npm run npmdemo  # Runs the npm package version demo
 ```
-
-4. Start the demo server:
-```bash
-npm run dev
-```
-
-5. Open http://localhost:3003 in your browser
-
-### Demo Features
-- File selection interface
-- Theme toggle (Light/Dark)
-- Sample content with various markdown features
-- Live rendering preview
 
 ## Project Structure
 
 ```
 mini-renderer/
 ├── packages/
-│   ├── core/               # Main package
-│   │   ├── src/
-│   │   │   ├── components/
-│   │   │   ├── styles/
-│   │   │   └── index.ts
-│   │   └── package.json
-│   └── demo/              # Demo application
-│       ├── src/
-│       │   ├── client/
-│       │   ├── server.ts
-│       │   └── data/
-│       └── package.json
-└── package.json
+│   ├── core/       # Main package source
+│   ├── demo/       # Demo using local source
+│   └── npmdemo/    # Demo using npm package
 ```
 
-## Browser Support
+## Changelog
 
-- Chrome (latest)
-- Firefox (latest)
-- Safari (latest)
-- Edge (latest)
+### v0.1.1
+- Fixed code block escaping for quotes
+- Fixed LaTeX matrix row delimiter handling
+- Moved content preprocessing to core package
+- Improved demo server configuration
 
-## Dependencies
-
-- marked: Markdown parsing
-- prismjs: Code syntax highlighting
-- mathjax: Math equation rendering
-
-## Contributing
-
-Contributions are welcome! Please feel free to submit a Pull Request.
+### v0.1.0
+- Initial release
+- Basic markdown rendering
+- Code syntax highlighting
+- LaTeX math support
+- Theme switching
 
 ## License
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+MIT
