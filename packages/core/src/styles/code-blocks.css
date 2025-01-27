@@ -1,0 +1,89 @@
+.code-block-container {
+    position: relative;
+    margin: 10px 0;
+    font-size: 1em;
+}
+
+.copy-button,
+.language-label {
+    position: absolute;
+    top: 5px;
+    height: 28px;
+    background-color: #f0f0f0;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-sizing: border-box;
+    z-index: 1;
+}
+
+.copy-button {
+    right: 5px;
+    width: 30px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+.copy-button:hover {
+    background-color: #e0e0e0;
+}
+
+.copy-icon {
+    width: 16px;
+    height: 16px;
+    background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>');
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+.language-label {
+    right: 40px;
+    padding: 0 8px;
+    font-size: 12px;
+    font-weight: 600;
+    color: #1a1a1a;
+    line-height: 1;
+    white-space: nowrap;
+}
+
+.code-block-container>pre {
+    padding-top: 40px;
+}
+
+/* Rendered markdown styles */
+.rendered-markdown {
+    background-color: #f8f8f8;
+    border: 1px solid #ddd;
+    border-radius: 3px;
+    padding: 5px 10px;
+    position: relative;
+}
+
+.rendered-markdown pre {
+    background-color: #f0f0f0;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+    padding: 5px;
+    margin: 5px 0;
+}
+
+.rendered-markdown code {
+    background-color: transparent;
+    padding: 0;
+}
+
+.code-block-container pre,
+.rendered-markdown {
+    padding-left: 10px;
+}
+
+.rendered-markdown {
+    padding-top: 0;
+}
+
+.rendered-markdown .copy-button,
+.rendered-markdown .language-label {
+    top: 5px;
+}

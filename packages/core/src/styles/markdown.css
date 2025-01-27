@@ -1,0 +1,40 @@
+#output h1 {
+    font-size: 1.5em;
+    margin-top: 1em;
+    margin-bottom: 0.5em;
+}
+
+#output h2 {
+    font-size: 1.3em;
+    margin-top: 0.9em;
+    margin-bottom: 0.45em;
+}
+
+#output h3 {
+    font-size: 1.15em;
+    margin-top: 0.8em;
+    margin-bottom: 0.4em;
+}
+
+#output h4 {
+    font-size: 1.05em;
+    margin-top: 0.7em;
+    margin-bottom: 0.35em;
+}
+
+#output h5 {
+    font-size: 1em;
+    margin-top: 0.6em;
+    margin-bottom: 0.3em;
+}
+
+#output h6 {
+    font-size: 0.95em;
+    margin-top: 0.5em;
+    margin-bottom: 0.25em;
+}
+
+#output pre {
+    font-size: 0.9em;
+    margin: 1em 0;
+}

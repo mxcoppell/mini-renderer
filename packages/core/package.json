@@ -1,0 +1,28 @@
+{
+    "name": "mini-render",
+    "version": "0.1.0",
+    "main": "dist/index.js",
+    "types": "dist/index.d.ts",
+    "files": [
+        "dist",
+        "README.md"
+    ],
+    "scripts": {
+        "build": "tsc && cp src/styles/*.css dist/styles/",
+        "test": "jest",
+        "prepublishOnly": "npm run build"
+    },
+    "dependencies": {
+        "marked": "^9.1.5",
+        "prismjs": "^1.29.0"
+    },
+    "peerDependencies": {
+        "mathjax": "^3.2.2"
+    },
+    "devDependencies": {
+        "@types/marked": "^5.0.1",
+        "@types/node": "^20.8.7",
+        "@types/prismjs": "^1.26.1",
+        "typescript": "^5.2.2"
+    }
+}

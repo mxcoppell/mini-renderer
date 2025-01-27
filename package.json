@@ -1,21 +1,12 @@
 {
-  "name": "mini-render",
-  "version": "1.0.0",
-  "main": "index.js",
+  "name": "mini-render-workspace",
+  "private": true,
+  "workspaces": [
+    "packages/*"
+  ],
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node server.js",
-    "build": "mkdir -p dist && cp -R index.html app.js server.js data dist/ && echo 'Build completed. Files copied to dist/'",
-    "dev": "nodemon server.js"
-  },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "description": "",
-  "dependencies": {
-    "express": "^4.21.2"
-  },
-  "devDependencies": {
-    "nodemon": "^3.1.9"
+    "build": "npm run build --workspace=packages/core",
+    "dev": "npm run dev --workspace=packages/demo",
+    "test": "npm test --workspaces"
   }
 }
