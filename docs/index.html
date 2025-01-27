@@ -208,17 +208,13 @@
     </div>
 
     <!-- Load libraries with defer -->
-    <script defer src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
-    <script defer src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.24.1/components/prism-core.min.js"></script>
-    <script defer
-        src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.24.1/plugins/autoloader/prism-autoloader.min.js"></script>
-    <script defer
-        src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.24.1/plugins/toolbar/prism-toolbar.min.js"></script>
-    <script defer src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.24.1/components/prism-python.min.js"></script>
-    <script defer src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.24.1/components/prism-javascript.min.js"></script>
-    <script defer src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.24.1/components/prism-java.min.js"></script>
-    <script defer src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.24.1/components/prism-markdown.min.js"></script>
-    <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js" id="MathJax-script"></script>
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.24.1/prism.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.24.1/components/prism-python.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.24.1/components/prism-javascript.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.24.1/components/prism-java.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.24.1/components/prism-markdown.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js" id="MathJax-script"></script>
 
     <!-- Main script -->
     <script>
@@ -343,25 +339,27 @@ C = \\begin{pmatrix}
             });
         }
 
-        // Initialize rendering when all scripts are loaded
-        function initializeRendering() {
-            if (!window.marked || !window.Prism) {
-                setTimeout(initializeRendering, 100);
+        // Wait for all scripts to load
+        function waitForScripts() {
+            if (!window.marked || !window.Prism || !window.MathJax) {
+                setTimeout(waitForScripts, 100);
                 return;
             }
 
             // Initialize marked with options
             marked.use({
                 mangle: false,
-                headerIds: false
+                headerIds: false,
+                breaks: true
             });
 
             // Rendering functionality
             function renderContent(content) {
                 const renderer = new marked.Renderer();
-                const originalCodeRenderer = renderer.code.bind(renderer);
 
                 renderer.code = (code, language) => {
+                    if (!code) return '';
+
                     if (language === 'markdown') {
                         const escapedCode = code.replace(/</g, '&lt;').replace(/>/g, '&gt;');
                         return `<div class="code-block-container">
@@ -395,18 +393,20 @@ C = \\begin{pmatrix}
 
             // Render content
             document.getElementById('content').innerHTML = renderContent(demoContent);
+
+            // Highlight code blocks
             Prism.highlightAll();
 
-            // Re-render math after content is loaded
-            if (window.MathJax) {
-                MathJax.typesetPromise();
-            }
+            // Render math
+            MathJax.typesetPromise();
         }
 
         // Start initialization when DOM is loaded
-        document.addEventListener('DOMContentLoaded', function () {
-            initializeRendering();
-        });
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', waitForScripts);
+        } else {
+            waitForScripts();
+        }
     </script>
 </body>
 
