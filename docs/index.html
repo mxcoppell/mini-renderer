@@ -174,16 +174,6 @@
             color: #dcdcaa;
         }
     </style>
-</head>
-
-<body>
-    <div id="container">
-        <div class="header">
-            <h1>Mini-Render Demo</h1>
-            <button id="theme-toggle">🌞 Light</button>
-        </div>
-        <div id="content"></div>
-    </div>
 
     <!-- MathJax Configuration -->
     <script>
@@ -200,113 +190,40 @@
             startup: {
                 pageReady: () => {
                     return MathJax.startup.defaultPageReady().then(() => {
-                        // Trigger MathJax to process any new content
                         MathJax.typesetPromise();
                     });
                 }
             }
         };
     </script>
+</head>
 
-    <!-- Load libraries -->
-    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.24.1/components/prism-core.min.js"></script>
-    <script
+<body>
+    <div id="container">
+        <div class="header">
+            <h1>Mini-Render Demo</h1>
+            <button id="theme-toggle">🌞 Light</button>
+        </div>
+        <div id="content"></div>
+    </div>
+
+    <!-- Load libraries with defer -->
+    <script defer src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <script defer src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.24.1/components/prism-core.min.js"></script>
+    <script defer
         src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.24.1/plugins/autoloader/prism-autoloader.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.24.1/plugins/toolbar/prism-toolbar.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.24.1/components/prism-python.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.24.1/components/prism-javascript.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.24.1/components/prism-java.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.24.1/components/prism-markdown.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js"></script>
+    <script defer
+        src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.24.1/plugins/toolbar/prism-toolbar.min.js"></script>
+    <script defer src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.24.1/components/prism-python.min.js"></script>
+    <script defer src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.24.1/components/prism-javascript.min.js"></script>
+    <script defer src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.24.1/components/prism-java.min.js"></script>
+    <script defer src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.24.1/components/prism-markdown.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js" id="MathJax-script"></script>
 
     <!-- Main script -->
     <script>
-        // Theme toggle functionality
-        const themeToggle = document.getElementById('theme-toggle');
-        const prefersDarkScheme = window.matchMedia('(prefers-color-scheme: dark)');
-
-        function getTheme() {
-            const savedTheme = localStorage.getItem('theme');
-            if (savedTheme) return savedTheme;
-            return prefersDarkScheme.matches ? 'dark' : 'light';
-        }
-
-        function setTheme(theme) {
-            document.documentElement.setAttribute('data-theme', theme);
-            localStorage.setItem('theme', theme);
-            themeToggle.textContent = theme === 'light' ? '🌞 Light' : '🌙 Dark';
-        }
-
-        // Initialize theme
-        setTheme(getTheme());
-
-        themeToggle.addEventListener('click', () => {
-            const currentTheme = document.documentElement.getAttribute('data-theme');
-            const newTheme = currentTheme === 'light' ? 'dark' : 'light';
-            setTheme(newTheme);
-        });
-
-        // Initialize marked with options
-        marked.use({
-            mangle: false,
-            headerIds: false
-        });
-
-        // Rendering functionality
-        function renderContent(content) {
-            const renderer = new marked.Renderer();
-            const originalCodeRenderer = renderer.code.bind(renderer);
-
-            renderer.code = (code, language) => {
-                if (language === 'markdown') {
-                    const escapedCode = code.replace(/</g, '&lt;').replace(/>/g, '&gt;');
-                    return `<div class="code-block-container">
-                        <pre><code class="language-markdown">${escapedCode}</code></pre>
-                        <span class="language-label">markdown</span>
-                        <button class="copy-button" onclick="copyCode(this)">📋</button>
-                        <div class="rendered-markdown-container">${marked.parse(code)}</div>
-                    </div>`;
-                }
-
-                const escapedCode = code.replace(/</g, '&lt;').replace(/>/g, '&gt;');
-                return `<div class="code-block-container">
-                    <pre><code class="language-${language || 'text'}">${escapedCode}</code></pre>
-                    <span class="language-label">${language || 'text'}</span>
-                    <button class="copy-button" onclick="copyCode(this)">📋</button>
-                </div>`;
-            };
-
-            marked.setOptions({
-                renderer: renderer,
-                highlight: (code, lang) => {
-                    if (Prism.languages[lang]) {
-                        return Prism.highlight(code, Prism.languages[lang], lang);
-                    }
-                    return code;
-                }
-            });
-
-            return marked.parse(content);
-        }
-
-        // Copy code functionality
-        window.copyCode = function (button) {
-            const pre = button.parentElement.querySelector('pre');
-            const code = pre.textContent;
-
-            navigator.clipboard.writeText(code).then(() => {
-                const originalText = button.textContent;
-                button.textContent = '✓';
-                setTimeout(() => {
-                    button.textContent = '📋';
-                }, 2000);
-            });
-        }
-
-        // Load and render content when everything is ready
-        window.addEventListener('load', function () {
-            const content = `Certainly! Below are examples with code blocks from different programming languages, a markdown code block, inline math, block math, and a matrix operation using LaTeX.
+        // Content to render
+        const demoContent = `Certainly! Below are examples with code blocks from different programming languages, a markdown code block, inline math, block math, and a matrix operation using LaTeX.
 
 ### Code Blocks
 
@@ -387,12 +304,108 @@ C = \\begin{pmatrix}
 \\end{pmatrix}
 \\]`;
 
-            document.getElementById('content').innerHTML = renderContent(content);
+        // Theme toggle functionality
+        const themeToggle = document.getElementById('theme-toggle');
+        const prefersDarkScheme = window.matchMedia('(prefers-color-scheme: dark)');
+
+        function getTheme() {
+            const savedTheme = localStorage.getItem('theme');
+            if (savedTheme) return savedTheme;
+            return prefersDarkScheme.matches ? 'dark' : 'light';
+        }
+
+        function setTheme(theme) {
+            document.documentElement.setAttribute('data-theme', theme);
+            localStorage.setItem('theme', theme);
+            themeToggle.textContent = theme === 'light' ? '🌞 Light' : '🌙 Dark';
+        }
+
+        // Initialize theme
+        setTheme(getTheme());
+
+        themeToggle.addEventListener('click', () => {
+            const currentTheme = document.documentElement.getAttribute('data-theme');
+            const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+            setTheme(newTheme);
+        });
+
+        // Copy code functionality
+        window.copyCode = function (button) {
+            const pre = button.parentElement.querySelector('pre');
+            const code = pre.textContent;
+
+            navigator.clipboard.writeText(code).then(() => {
+                const originalText = button.textContent;
+                button.textContent = '✓';
+                setTimeout(() => {
+                    button.textContent = '📋';
+                }, 2000);
+            });
+        }
+
+        // Initialize rendering when all scripts are loaded
+        function initializeRendering() {
+            if (!window.marked || !window.Prism) {
+                setTimeout(initializeRendering, 100);
+                return;
+            }
+
+            // Initialize marked with options
+            marked.use({
+                mangle: false,
+                headerIds: false
+            });
+
+            // Rendering functionality
+            function renderContent(content) {
+                const renderer = new marked.Renderer();
+                const originalCodeRenderer = renderer.code.bind(renderer);
+
+                renderer.code = (code, language) => {
+                    if (language === 'markdown') {
+                        const escapedCode = code.replace(/</g, '&lt;').replace(/>/g, '&gt;');
+                        return `<div class="code-block-container">
+                            <pre><code class="language-markdown">${escapedCode}</code></pre>
+                            <span class="language-label">markdown</span>
+                            <button class="copy-button" onclick="copyCode(this)">📋</button>
+                            <div class="rendered-markdown-container">${marked.parse(code)}</div>
+                        </div>`;
+                    }
+
+                    const escapedCode = code.replace(/</g, '&lt;').replace(/>/g, '&gt;');
+                    return `<div class="code-block-container">
+                        <pre><code class="language-${language || 'text'}">${escapedCode}</code></pre>
+                        <span class="language-label">${language || 'text'}</span>
+                        <button class="copy-button" onclick="copyCode(this)">📋</button>
+                    </div>`;
+                };
+
+                marked.setOptions({
+                    renderer: renderer,
+                    highlight: (code, lang) => {
+                        if (Prism.languages[lang]) {
+                            return Prism.highlight(code, Prism.languages[lang], lang);
+                        }
+                        return code;
+                    }
+                });
+
+                return marked.parse(content);
+            }
+
+            // Render content
+            document.getElementById('content').innerHTML = renderContent(demoContent);
             Prism.highlightAll();
+
             // Re-render math after content is loaded
             if (window.MathJax) {
                 MathJax.typesetPromise();
             }
+        }
+
+        // Start initialization when DOM is loaded
+        document.addEventListener('DOMContentLoaded', function () {
+            initializeRendering();
         });
     </script>
 </body>
