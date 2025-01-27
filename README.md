@@ -7,6 +7,11 @@ A lightweight TypeScript package for rendering markdown content with support for
 - Copy to clipboard functionality
 - Light/Dark theme support
 
+<div align="center">
+  <img src="docs/render-sample.png" alt="Mini-Render Sample" style="width: 100%; max-width: 800px;">
+  <p><em>Sample output of Mini-Render showing code highlighting, math rendering, and theme support</em></p>
+</div>
+
 ## Installation
 
 ```bash
@@ -167,4 +172,4 @@ Contributions are welcome! Please feel free to submit a Pull Request.
 
 ## License
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details. 
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
