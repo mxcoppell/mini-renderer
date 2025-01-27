@@ -9,7 +9,7 @@ declare const Prism: {
     highlightAll: () => void;
 };
 
-import { MiniRenderer, StyleManager, addCopyButtons } from 'mini-render';
+import { MiniRenderer, StyleManager, addCopyButtons } from 'mini-renderer';
 
 const renderer = new MiniRenderer();
 const styleManager = new StyleManager();

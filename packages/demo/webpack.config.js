@@ -22,7 +22,7 @@ module.exports = {
     resolve: {
         extensions: ['.ts', '.js'],
         alias: {
-            'mini-render': path.resolve(__dirname, '../core/src')
+            'mini-renderer': path.resolve(__dirname, '../core/src')
         }
     },
     devtool: 'source-map'

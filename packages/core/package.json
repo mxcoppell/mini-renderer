@@ -1,6 +1,7 @@
 {
-    "name": "mini-render",
+    "name": "mini-renderer",
     "version": "0.1.0",
+    "description": "A lightweight TypeScript package for rendering markdown with code highlighting, LaTeX math, and theme support",
     "main": "dist/index.js",
     "types": "dist/index.d.ts",
     "files": [
@@ -12,6 +13,22 @@
         "test": "jest",
         "prepublishOnly": "npm run build"
     },
+    "keywords": [
+        "markdown",
+        "renderer",
+        "syntax-highlighting",
+        "latex",
+        "math",
+        "code-blocks",
+        "themes",
+        "typescript"
+    ],
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/mxcoppell/mini-renderer.git"
+    },
+    "author": "Mini-Renderer Contributors",
+    "license": "MIT",
     "dependencies": {
         "marked": "^9.1.5",
         "prismjs": "^1.29.0"

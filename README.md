@@ -1,4 +1,4 @@
-# Mini-Render
+# Mini-Renderer
 
 A lightweight TypeScript package for rendering markdown content with support for:
 - Code syntax highlighting
@@ -8,14 +8,14 @@ A lightweight TypeScript package for rendering markdown content with support for
 - Light/Dark theme support
 
 <div align="center">
-  <img src="docs/render-sample.png" alt="Mini-Render Sample" style="width: 100%; max-width: 800px;">
-  <p><em>Sample output of Mini-Render showing code highlighting, math rendering, and theme support</em></p>
+  <img src="docs/render-sample.png" alt="Mini-Renderer Sample" style="width: 100%; max-width: 800px;">
+  <p><em>Sample output of Mini-Renderer showing code highlighting, math rendering, and theme support</em></p>
 </div>
 
 ## Installation
 
 ```bash
-npm install mini-render
+npm install mini-renderer
 ```
 
 ## Usage
@@ -23,7 +23,7 @@ npm install mini-render
 ### Basic Usage
 
 ```typescript
-import { MiniRenderer, StyleManager } from 'mini-render';
+import { MiniRenderer, StyleManager } from 'mini-renderer';
 
 // Initialize renderer and style manager
 const renderer = new MiniRenderer();
@@ -106,8 +106,8 @@ A demo web application is included to showcase the package functionality.
 
 1. Clone the repository:
 ```bash
-git clone https://github.com/yourusername/mini-render.git
-cd mini-render
+git clone https://github.com/yourusername/mini-renderer.git
+cd mini-renderer
 ```
 
 2. Install dependencies:
@@ -136,7 +136,7 @@ npm run dev
 ## Project Structure
 
 ```
-mini-render/
+mini-renderer/
 ├── packages/
 │   ├── core/               # Main package
 │   │   ├── src/
