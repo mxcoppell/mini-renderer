@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LLM Content Renderer</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            padding: 20px;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        pre {
+            background-color: #f4f4f4;
+            padding: 10px;
+            border-radius: 5px;
+            overflow-x: auto;
+        }
+
+        code {
+            background-color: #f4f4f4;
+            padding: 2px 4px;
+            border-radius: 3px;
+        }
+
+        /* Styles for MathJax elements */
+        .MathJax {
+            font-size: 120% !important;
+        }
+
+        /* Specific styles for inline math */
+        .MathJax_SVG_Display {
+            display: inline;
+            font-size: 120% !important;
+        }
+
+        /* Specific styles for block math */
+        .MathJax_SVG_Display {
+            display: block;
+            font-size: 140% !important;
+            margin: 1em 0;
+        }
+
+        /* Styles for rendered markdown within code blocks */
+        .rendered-markdown {
+            background-color: #f8f8f8;
+            border: 1px solid #ddd;
+            border-radius: 3px;
+            padding: 5px 10px;
+            position: relative;
+        }
+
+        .rendered-markdown pre {
+            background-color: #f0f0f0;
+            border: 1px solid #ccc;
+            border-radius: 3px;
+            padding: 5px;
+            margin: 5px 0;
+        }
+
+        .rendered-markdown code {
+            background-color: transparent;
+            padding: 0;
+        }
+
+        /* Ensure consistent left padding for all code blocks */
+        .code-block-container pre,
+        .rendered-markdown {
+            padding-left: 10px;
+        }
+
+        #file-list {
+            margin-bottom: 20px;
+        }
+
+        #file-list a {
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        /* Styles for code block container, copy button, and language label */
+        .code-block-container {
+            position: relative;
+            margin: 10px 0;
+        }
+
+        .copy-button,
+        .language-label {
+            position: absolute;
+            top: 5px;
+            height: 28px;
+            /* Reduced from 30px to account for borders */
+            background-color: #f0f0f0;
+            border: 1px solid #ccc;
+            border-radius: 3px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-sizing: border-box;
+            z-index: 1;
+        }
+
+        .copy-button {
+            right: 5px;
+            width: 30px;
+            cursor: pointer;
+        }
+
+        .copy-button:hover {
+            background-color: #e0e0e0;
+        }
+
+        .copy-icon {
+            width: 16px;
+            height: 16px;
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>');
+            background-repeat: no-repeat;
+            background-position: center;
+        }
+
+        .language-label {
+            right: 40px;
+            padding: 0 8px;
+            font-size: 12px;
+            font-weight: 600;
+            color: #1a1a1a;
+            line-height: 1;
+            white-space: nowrap;
+        }
+
+        /* Adjust padding for regular code blocks to accommodate button and label */
+        .code-block-container>pre {
+            padding-top: 40px;
+        }
+
+        /* Remove padding from rendered markdown and adjust button/label positioning */
+        .rendered-markdown {
+            padding-top: 0;
+        }
+
+        .rendered-markdown .copy-button,
+        .rendered-markdown .language-label {
+            top: 5px;
+        }
+
+        /* Styles for adjusting markdown heading hierarchy */
+        #output {
+            font-size: 16px;
+            line-height: 1.6;
+        }
+
+        #output h1 {
+            font-size: 1.5em;
+            margin-top: 1em;
+            margin-bottom: 0.5em;
+        }
+
+        #output h2 {
+            font-size: 1.3em;
+            margin-top: 0.9em;
+            margin-bottom: 0.45em;
+        }
+
+        #output h3 {
+            font-size: 1.15em;
+            margin-top: 0.8em;
+            margin-bottom: 0.4em;
+        }
+
+        #output h4 {
+            font-size: 1.05em;
+            margin-top: 0.7em;
+            margin-bottom: 0.35em;
+        }
+
+        #output h5 {
+            font-size: 1em;
+            margin-top: 0.6em;
+            margin-bottom: 0.3em;
+        }
+
+        #output h6 {
+            font-size: 0.95em;
+            margin-top: 0.5em;
+            margin-bottom: 0.25em;
+        }
+
+        #output pre {
+            font-size: 0.9em;
+            margin: 1em 0;
+        }
+
+        /* Adjust code block container */
+        .code-block-container {
+            font-size: 1em;
+            margin: 1em 0;
+        }
+
+        /* Ensure copy button remains at original size */
+        .copy-button {
+            font-size: 16px;
+        }
+    </style>
+    <!-- MathJax Configuration -->
+    <script>
+        MathJax = {
+            loader: { load: ['input/tex', 'output/svg'] },
+            tex: {
+                inlineMath: [['$', '$'], ['\(', '\)'], ['\\(', '\\)'], ['\\\\(', '\\\\)']],
+                displayMath: [['$$', '$$'], ['\[', '\]'], ['\\[', '\\]'], ['\\\\[', '\\\\]']],
+            },
+            svg: {
+                fontCache: 'global',
+                scale: 1.2  // Increase this value to make LaTeX bigger
+            },
+            startup: {
+                pageReady: () => {
+                    return MathJax.startup.defaultPageReady().then(() => {
+                        renderContent();
+                    });
+                }
+            }
+        };
+    </script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/startup.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.24.1/themes/prism.min.css" rel="stylesheet" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.24.1/prism.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.24.1/components/prism-core.min.js"></script>
+    <script
+        src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.24.1/plugins/autoloader/prism-autoloader.min.js"></script>
+</head>
+
+<body>
+    <h1>File Renderer</h1>
+    <div id="file-list"></div>
+    <div id="output"></div>
+
+    <script src="app.js"></script>
+</body>
+
+</html>
