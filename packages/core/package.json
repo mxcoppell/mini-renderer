@@ -1,6 +1,6 @@
 {
     "name": "mini-renderer",
-    "version": "0.1.1",
+    "version": "0.1.2",
     "description": "A lightweight TypeScript package for rendering markdown with code highlighting, LaTeX math, and theme support",
     "main": "dist/index.js",
     "types": "dist/index.d.ts",
