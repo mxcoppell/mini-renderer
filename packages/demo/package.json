@@ -7,7 +7,8 @@
         "dev:server": "ts-node-dev --respawn src/server.ts",
         "dev:client": "webpack --watch --mode development",
         "build": "webpack --mode production && tsc",
-        "start": "node dist/server.js"
+        "start": "node dist/server.js",
+        "test": "echo \"No tests configured yet\""
     },
     "dependencies": {
         "express": "^4.21.2",

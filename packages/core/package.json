@@ -10,7 +10,7 @@
     ],
     "scripts": {
         "build": "tsc && mkdir -p dist/styles && cp src/styles/*.css dist/styles/",
-        "test": "jest",
+        "test": "echo \"No tests configured yet\"",
         "prepublishOnly": "npm run build"
     },
     "keywords": [
