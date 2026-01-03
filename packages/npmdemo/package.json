@@ -5,7 +5,8 @@
     "scripts": {
         "build": "webpack",
         "start": "webpack serve --open",
-        "npmdemo": "webpack serve --open"
+        "npmdemo": "webpack serve --open",
+        "test": "echo \"No tests configured yet\""
     },
     "dependencies": {
         "mini-renderer": "^0.1.2"

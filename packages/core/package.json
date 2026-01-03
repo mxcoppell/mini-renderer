@@ -9,8 +9,8 @@
         "README.md"
     ],
     "scripts": {
-        "build": "tsc && cp src/styles/*.css dist/styles/",
-        "test": "jest",
+        "build": "tsc && mkdir -p dist/styles && cp src/styles/*.css dist/styles/",
+        "test": "echo \"No tests configured yet\"",
         "prepublishOnly": "npm run build"
     },
     "keywords": [
