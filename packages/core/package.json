@@ -9,7 +9,7 @@
         "README.md"
     ],
     "scripts": {
-        "build": "tsc && cp src/styles/*.css dist/styles/",
+        "build": "tsc && mkdir -p dist/styles && cp src/styles/*.css dist/styles/",
         "test": "jest",
         "prepublishOnly": "npm run build"
     },
