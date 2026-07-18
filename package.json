@@ -12,5 +12,9 @@
   },
   "dependencies": {
     "mini-renderer": "^0.1.0"
+  },
+  "overrides": {
+    "qs": "6.15.3",
+    "uuid": "11.1.1"
   }
 }
